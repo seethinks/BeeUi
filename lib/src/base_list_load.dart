@@ -17,6 +17,8 @@ class BaseListLoad extends StatefulWidget {
   Function fetchData;
   Widget initLoadingView;
   int pageSize;
+  bool desablePullUp; // 禁止上拉
+  bool desablePullDown; //禁止下拉
 
   BaseListLoad(Function fetchData, Function renderRow,
       {Widget initLoadingView, int pageSize = 10}) {
@@ -44,15 +46,17 @@ class _BaseListLoadState extends State<BaseListLoad> {
   @override
   void initState() {
     _beginHeaderRefresh();
+
+    _scrollController.addListener(_onScrollHandle);
   }
 
-  Future getData() async {
-    await Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        isFirst = false;
-        isInitError = true;
-      });
-    });
+  _onScrollHandle() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      if (footerState == RefreshState.CanLoadMore) {
+        _beginLoadMore();
+      }
+    }
   }
 
   /// 开始下拉刷新
@@ -79,6 +83,30 @@ class _BaseListLoadState extends State<BaseListLoad> {
     });
   }
 
+  /// 开始加载更多
+  @override
+  _beginLoadMore() {
+    if (_shouldStartLoadMore()) {
+      _startLoadMore();
+    }
+  }
+
+  _shouldStartLoadMore() {
+    if (footerState == RefreshState.Refreshing ||
+        isHeaderRefreshing ||
+        isFooterRefreshing) {
+      return false;
+    }
+    return true;
+  }
+
+  _startLoadMore() {
+    setState(() {
+      isFooterRefreshing = true;
+      _getMoreData();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // 初始化的时候显示加载中
@@ -90,9 +118,6 @@ class _BaseListLoadState extends State<BaseListLoad> {
     if (isInitError) {
       return _renderInitError();
     }
-
-    print("list-----${list}${list.length}");
-
     if (list.length == 0) {
       return _renderEmptyData();
     }
@@ -165,7 +190,12 @@ class _BaseListLoadState extends State<BaseListLoad> {
       print("${index}");
       return widget.renderRow(list[index], index);
     }
-    return _getMoreLoadingWidget();
+
+    //可以加载更多
+    if (footerState == RefreshState.CanLoadMore) {
+      return _getMoreLoadingWidget();
+    }
+    return _noMore();
   }
 
   Widget _getMoreLoadingWidget() {
@@ -189,6 +219,24 @@ class _BaseListLoadState extends State<BaseListLoad> {
     );
   }
 
+  Widget _noMore() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              '暂无更多',
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _renderEmptyData() {
     return Center(
         child: Row(
@@ -204,6 +252,15 @@ class _BaseListLoadState extends State<BaseListLoad> {
   }
 
   Future<void> _onRefresh() async {
+    await setState(() {
+      pageIndex = 1;
+    });
+    print("pageIndex${pageIndex}");
+    await _fetchData();
+    return null;
+  }
+
+  _fetchData() async {
     if (widget.fetchData != null) {
       try {
         var fullData = await widget.fetchData(pageIndex, widget.pageSize);
@@ -218,6 +275,10 @@ class _BaseListLoadState extends State<BaseListLoad> {
     }
   }
 
+  _getMoreData() {
+    _fetchData();
+  }
+
   _setViewState(Map<String, dynamic> data) {
     // 获取总的条数
     var _data = data["data"];
@@ -226,7 +287,13 @@ class _BaseListLoadState extends State<BaseListLoad> {
 
     setState(() {
       try {
-        list = new List.from(list)..addAll(_data);
+        // 第一次或者重新下拉加载的
+        if (pageIndex == 1) {
+          list = new List.from([])..addAll(_data);
+        } else {
+          list = new List.from(list)..addAll(_data);
+        }
+
         if (pageIndex < totalPage) {
           // 还有数据可以加载
           footerState = RefreshState.CanLoadMore;
