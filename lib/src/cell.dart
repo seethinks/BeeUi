@@ -2,15 +2,15 @@ import 'package:beeui/src/icon.dart';
 import 'package:flutter/material.dart';
 
 class Cell extends StatelessWidget {
-  final String title;
+  final Text title;
   final Widget icon;
   final Widget thum;
   final Function onPress;
   final bool arrow;
   final bool disabled;
   final Widget extra;
-  final Widget children;
   final int labelNumber;
+  final Widget child;
   final BoxDecoration decoration;
 
   Cell(
@@ -21,10 +21,10 @@ class Cell extends StatelessWidget {
       this.onPress,
       this.arrow = false,
       this.extra,
-      this.children,
       this.disabled = false,
       this.decoration,
-      this.labelNumber = 4})
+      this.labelNumber = 4,
+      this.child})
       : super(key: key);
 
   @override
@@ -45,14 +45,13 @@ class Cell extends StatelessWidget {
         child: Row(
           children: <Widget>[
             _renderCenter(context),
-            _renderRight(context),
+            // _renderRight(context),
           ],
         ),
       ),
     ));
 
     return Container(
-        margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: InkWell(
             key: key,
             onTap: () {
@@ -72,16 +71,18 @@ class Cell extends StatelessWidget {
     //   renderArr.add(icon);
     // }
 
-    if (title is String) {
-      renderArr.add(Text(
-        title,
-        style: TextStyle(
-          fontSize: 14.0,
-          //color: Colors.white
-        ),
-      ));
+    if (title != null) {
+      renderArr.add(title);
     }
-    return Expanded(flex: 1, child: Container(child: Row(children: renderArr)));
+
+    if (child != null) {
+      renderArr.add(child);
+    }
+    return Expanded(
+        flex: 1,
+        child: Container(
+            // decoration: BoxDecoration(color: Colors.red),
+            child: Row(children: renderArr)));
   }
 
   Widget _renderRight(BuildContext context) {
@@ -94,15 +95,18 @@ class Cell extends StatelessWidget {
     if (arrow) {
       renderArr.add(Icon(
         BeeIcon.rightArrow,
-        color: Colors.grey,
-        size: 22,
+        color: Theme.of(context).buttonColor,
+        size: 18,
       ));
     }
 
-    return Container(
-      child: Row(
-        children: renderArr,
-      ),
-    );
+    if (renderArr.length > 0) {
+      return Container(
+        child: Row(
+          children: renderArr,
+        ),
+      );
+    }
+    return null;
   }
 }

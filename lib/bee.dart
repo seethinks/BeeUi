@@ -7,3 +7,6 @@ export './src/base_wrap.dart';
 export './src/InputText.dart';
 export './src/button.dart';
 export './src/select.dart';
+export './src/toast.dart';
+export './src/img_verify_code.dart';
+export './src/sys_yzm.dart';

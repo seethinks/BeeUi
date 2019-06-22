@@ -3,6 +3,9 @@ import 'package:flutter/widgets.dart';
 class BeeIcon {
   static const IconData rightArrow = const _MyIconData(0xe600);
   static const IconData leftArrow = const _MyIconData(0xe60a);
+  static const IconData success = const _MyIconData(0xe614);
+  static const IconData fail = const _MyIconData(0xe6f1);
+  static const IconData inputClean = const _MyIconData(0xe63e);
 }
 
 class _MyIconData extends IconData {
