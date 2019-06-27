@@ -35,17 +35,18 @@ class Cell extends StatelessWidget {
       arr.add(
           Container(margin: EdgeInsets.fromLTRB(15, 0, 15, 0), child: thum));
     }
-    print(decoration);
 
     arr.add(Expanded(
       flex: 1,
       child: Container(
-        decoration: decoration,
+        decoration: BoxDecoration(
+            border:
+                Border(bottom: BorderSide(color: Colors.grey[200], width: 1))),
         height: 48,
         child: Row(
           children: <Widget>[
             _renderCenter(context),
-            // _renderRight(context),
+            _renderRight(context),
           ],
         ),
       ),
@@ -95,18 +96,19 @@ class Cell extends StatelessWidget {
     if (arrow) {
       renderArr.add(Icon(
         BeeIcon.rightArrow,
-        color: Theme.of(context).buttonColor,
+        color: Colors.black,
         size: 18,
       ));
     }
 
     if (renderArr.length > 0) {
       return Container(
+        padding: EdgeInsets.only(right: 15),
         child: Row(
           children: renderArr,
         ),
       );
     }
-    return null;
+    return Container();
   }
 }

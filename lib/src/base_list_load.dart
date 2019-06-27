@@ -28,8 +28,15 @@ class BaseListLoad extends StatefulWidget {
     this.pageSize = pageSize;
   }
 
+  _BaseListLoadState baseListLoad = new _BaseListLoadState();
   @override
-  _BaseListLoadState createState() => _BaseListLoadState();
+  _BaseListLoadState createState() => baseListLoad;
+  void reload() {
+    baseListLoad.reload();
+  }
+
+  // @override
+  // _BaseListLoadState createState() => _BaseListLoadState();
 }
 
 class _BaseListLoadState extends State<BaseListLoad> {
@@ -152,6 +159,10 @@ class _BaseListLoadState extends State<BaseListLoad> {
 
   @override
   _onReloadBtn() {
+    reload();
+  }
+
+  reload() {
     setState(() {
       isFirst = true;
       _beginHeaderRefresh();

@@ -24,7 +24,7 @@ class Button extends StatelessWidget {
       return FlatButton(
         onPressed: disabled == true ? null : _log,
         child: Padding(padding: EdgeInsets.all(10.0), child: Text(text)),
-        color: Colors.blue,
+        color: Theme.of(context).primaryColor,
         textColor: Colors.white,
         shape: RoundedRectangleBorder(
             side: BorderSide(

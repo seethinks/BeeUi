@@ -13,18 +13,19 @@ class InputText extends StatefulWidget {
   final Function onSubmit; //提交回调
   final bool autofocus; ////是否自动对焦
   final String placeholder;
-  final String helperText;
+  final Widget helperText;
+  final FocusNode focusNode;
+  final TextEditingController controller;
   String label;
   final Widget icon;
-  final String defaultValue; //默认值
   final FormLayout layout;
   final BoxDecoration decoration;
   final Function validator;
   final Function onSave;
-  final Widget extra;
+  final Widget suffix;
   final Widget prefix;
   final bool enableInteractiveSelection;
-  final bool isShowBorder;
+  final bool isShowCleanIcon;
 
   @override
   _InputTextState createState() => _InputTextState();
@@ -35,29 +36,42 @@ class InputText extends StatefulWidget {
       this.disabled = false,
       this.type = InputType.text,
       this.label,
-      this.defaultValue,
       this.icon,
       this.placeholder,
       this.onChange,
+      this.controller,
+      this.focusNode,
       this.onSubmit,
       this.enableInteractiveSelection = true,
-      this.layout = FormLayout.horizontal,
+      this.layout = FormLayout.vertical,
       this.decoration,
       this.helperText,
       this.validator,
       this.onSave,
-      this.extra,
+      this.suffix,
       this.prefix,
       this.autofocus = false,
-      this.isShowBorder = false,
+      this.isShowCleanIcon = true,
       this.maxLength = 30})
       : super(key: key);
 }
 
 class _InputTextState extends State<InputText> {
-  final TextEditingController controller = new TextEditingController();
+  FocusNode _focus = new FocusNode();
+  bool hasCleanIcon = false;
+  bool isFocus = false;
 
-  bool isShowCleanIcon = false;
+  @override
+  void initState() {
+    super.initState();
+    _focus.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    setState(() {
+      isFocus = _focus.hasFocus;
+    });
+  }
 
   TextInputType _keyboardType() {
     if (widget.type == InputType.phone) {
@@ -79,20 +93,73 @@ class _InputTextState extends State<InputText> {
     return arr;
   }
 
-  Widget buildTextField() {
-    const TextStyle labelStyle = TextStyle(color: Colors.white, fontSize: 12.0);
-    bool isVertical = widget.layout == FormLayout.vertical;
-    var arr = <Widget>[];
+  Widget _renderHd() {
+    List<Widget> hd = [];
     if (widget.label != null) {
       var _label = Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-          child:
-              Text(widget.label, textAlign: TextAlign.left, style: labelStyle));
-      arr.add(_label);
+          // margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          child: Text(widget.label,
+              textAlign: TextAlign.left,
+              style: TextStyle(color: Colors.grey[700], fontSize: 12.0)));
+      hd.add(_label);
+    }
+    return Row(
+      children: hd,
+    );
+  }
+
+  Widget _renderBd() {
+    List<Widget> bd = [];
+    if (widget.prefix != null) {
+      bd.add(widget.prefix);
+    }
+    bd.add(Expanded(child: _renderTextField()));
+
+    if (!widget.disabled && widget.isShowCleanIcon && hasCleanIcon) {
+      bd.add(_renderCleanIcon());
     }
 
-    var textField = TextFormField(
-        controller: controller,
+    if (widget.suffix != null) {
+      bd.add(Padding(
+        padding: EdgeInsets.only(left: 5),
+        child: widget.suffix,
+      ));
+    }
+
+    return Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(bottom: 5, top: 5),
+        decoration: new BoxDecoration(
+            // color: Theme.of(context).primaryColor,
+            border: Border(
+                bottom: BorderSide(
+                    color: isFocus
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey[200],
+                    width: 1))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: bd,
+        ));
+  }
+
+  Widget _renderFd() {
+    List<Widget> fd = [];
+    if (widget.helperText != null) {
+      fd.add(
+          Padding(padding: EdgeInsets.only(top: 5), child: widget.helperText));
+    }
+    return Row(
+      children: fd,
+    );
+  }
+
+  Widget _renderTextField() {
+    return TextFormField(
+        controller: widget.controller,
+        focusNode: widget.focusNode,
+        cursorColor: Theme.of(context).primaryColor,
         maxLength: widget.maxLength,
         enableInteractiveSelection: widget.enableInteractiveSelection,
         maxLines: 1, //最大行数
@@ -134,76 +201,68 @@ class _InputTextState extends State<InputText> {
         //   });
         // },
         decoration: InputDecoration(
-            // prefixText: layout == InputTextLayout.horizontal ? label : null,
-            // prefixStyle: labelStyle,
-            contentPadding: EdgeInsets.all(8),
-            helperText: widget.helperText,
-            hintText: widget.placeholder,
-            suffixIcon: _renderSuffixIcon(),
-            counterText: "",
-            // border: OutlineInputBorder(
-            //     borderRadius: BorderRadius.circular(15),
-            //     borderSide: BorderSide)
-            // border: Border.none, //隐藏下划线
-            // border: OutlineInputBorder(), //隐藏下划线
-            ));
+          // prefixText: layout == InputTextLayout.horizontal ? label : null,
+          // prefixStyle: labelStyle,
+          contentPadding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+          hintText: widget.placeholder,
+          counterText: "",
+          // border: OutlineInputBorder(
+          //     borderRadius: BorderRadius.circular(15),
+          //     borderSide: BorderSide)
+          border: InputBorder.none, //隐藏下划线
+          // border: OutlineInputBorder(), //隐藏下划线
+        ));
+  }
 
-    if (widget.prefix != null) {
-      arr.add(widget.prefix);
-    }
+  Widget buildTextField() {
+    bool isVertical = widget.layout == FormLayout.vertical;
+    Widget main = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[_renderBd(), _renderFd()]);
+    // children: <Widget>[_renderBd()]);
 
-    arr.add(isVertical ? textField : Expanded(child: textField));
+    // arr.add(isVertical ? textField : Expanded(child: textField));
 
-    if (widget.extra != null) {
-      arr.add(widget.extra);
-    }
     //如果是垂直布局
     if (isVertical) {
       return Column(
-          crossAxisAlignment: CrossAxisAlignment.start, children: arr);
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[_renderHd(), main]);
     } else {
-      return Row(children: arr);
+      return Row(children: <Widget>[_renderHd(), main]);
     }
   }
 
-  Widget _renderSuffixIcon() {
-    if (!isShowCleanIcon) {
-      return null;
-    }
-
-//  widget.isShowBorder
-//               ? OutlineInputBorder()
-//               : InputBorder.none
-    return IconButton(
-        icon: Icon(BeeIcon.inputClean),
-        onPressed: () {
-          cleanInputValue();
+  Widget _renderCleanIcon() {
+    return InkWell(
+        child: Icon(BeeIcon.inputClean, size: 15),
+        onTap: () {
+          _cleanInputValue();
         });
   }
 
-  cleanInputValue() {
-    if (controller != null) {
-      controller.clear();
+  _cleanInputValue() {
+    if (widget.controller != null) {
+      widget.controller.clear();
     }
   }
 
   void _onChange() {
-    String text = controller.text;
+    String text = widget.controller.text;
     if (widget.onChange is Function) {
       widget.onChange(text);
     }
 
     setState(() {
-      isShowCleanIcon = text != '';
+      hasCleanIcon = text != '';
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.defaultValue != null) {
-      controller.text = widget.defaultValue;
+    if (widget.controller != null) {
+      widget.controller.addListener(_onChange);
     }
-    controller.addListener(_onChange);
 
     // icon和label同时存在时，icon的优先级最高
     if (widget.icon != null) {
@@ -216,10 +275,7 @@ class _InputTextState extends State<InputText> {
 
     return Container(
       margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-
-      // padding: const EdgeInsets.all(8.0),
-      // alignment: Alignment.center,
-      // height: 40.0,
+      padding: EdgeInsets.symmetric(vertical: 8),
       child: buildTextField(),
     );
   }
