@@ -23,22 +23,23 @@ class BaseWrap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-            leading: leading != null ? leading : null,
-            // IconButton(
-            //     icon: Icon(
-            //       BeeIcon.leftArrow,
-            //       color: Colors.white,
-            //       size: 22,
-            //     ),
-            //     onPressed: () => {Navigator.pop(context)}),
-            elevation: 0,
-            title: title,
-            centerTitle: true,
-            actions: actions),
-        // body: SingleChildScrollView(
-        //   child: body,
-        // )
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(40.0),
+            child: AppBar(
+                leading: leading != null ? leading : null,
+                // IconButton(
+                //     icon: Icon(
+                //       BeeIcon.leftArrow,
+                //       color: Colors.white,
+                //       size: 22,
+                //     ),
+                //     onPressed: () => {Navigator.pop(context)}),
+                elevation: 1,
+                title: title,
+                centerTitle: true,
+                brightness: Brightness.dark,
+                backgroundColor: Colors.white,
+                actions: actions)),
         bottomNavigationBar: bottomNavigationBar,
         body: body);
   }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class SysYzm extends StatefulWidget {
   final Function onPress;
 
-  const SysYzm(this.onPress, {Key key}) : super(key: key);
+  const SysYzm({Key key, this.onPress}) : super(key: key);
   @override
   _SysYzmState createState() => _SysYzmState();
 }
