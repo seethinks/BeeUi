@@ -6,6 +6,8 @@ class BeeIcon {
   static const IconData success = const _MyIconData(0xe614);
   static const IconData fail = const _MyIconData(0xe6f1);
   static const IconData inputClean = const _MyIconData(0xe63e);
+  static const IconData noData = const _MyIconData(0xe61f);
+  static const IconData netError = const _MyIconData(0xe616);
 }
 
 class _MyIconData extends IconData {

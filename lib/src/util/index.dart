@@ -7,7 +7,7 @@ class BeeUi {
       {@required BuildContext context,
       @required WidgetBuilder builder,
       bool dismissOnTap = true,
-      String title = "提示"}) {
+      String title}) {
     assert(context != null);
     assert(builder != null);
 

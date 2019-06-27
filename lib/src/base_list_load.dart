@@ -4,6 +4,8 @@ import 'package:beeui/enums.dart';
 import 'package:beeui/src/button.dart';
 import 'package:flutter/material.dart';
 
+import 'icon.dart';
+
 class RefreshState {
   static String Idle = 'Idle'; // 初始状态，无刷新的情况
   static String CanLoadMore = 'CanLoadMore'; // 可以加载更多，表示列表还有数据可以继续加载
@@ -19,14 +21,14 @@ class BaseListLoad extends StatefulWidget {
   int pageSize;
   bool desablePullUp; // 禁止上拉
   bool desablePullDown; //禁止下拉
+  bool isNeedScroll;
 
-  BaseListLoad(Function fetchData, Function renderRow,
-      {Widget initLoadingView, int pageSize = 10}) {
-    this.fetchData = fetchData;
-    this.renderRow = renderRow;
-    this.initLoadingView = initLoadingView;
-    this.pageSize = pageSize;
-  }
+  BaseListLoad(this.fetchData, this.renderRow,
+      {Key key,
+      this.initLoadingView,
+      this.pageSize = 10,
+      this.isNeedScroll = true})
+      : super(key: key);
 
   _BaseListLoadState baseListLoad = new _BaseListLoadState();
   @override
@@ -52,9 +54,8 @@ class _BaseListLoadState extends State<BaseListLoad> {
 
   @override
   void initState() {
-    _beginHeaderRefresh();
-
     _scrollController.addListener(_onScrollHandle);
+    _beginHeaderRefresh();
   }
 
   _onScrollHandle() {
@@ -133,6 +134,10 @@ class _BaseListLoadState extends State<BaseListLoad> {
       child: RefreshIndicator(
           onRefresh: _onRefresh,
           child: ListView.builder(
+            physics: widget.isNeedScroll
+                ? AlwaysScrollableScrollPhysics()
+                : NeverScrollableScrollPhysics(),
+            shrinkWrap: !widget.isNeedScroll,
             itemBuilder: _renderRow,
             itemCount: list.length + 1,
             controller: _scrollController,
@@ -250,13 +255,21 @@ class _BaseListLoadState extends State<BaseListLoad> {
 
   Widget _renderEmptyData() {
     return Center(
-        child: Row(
+        child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(
-          '暂无数据~',
-          style: TextStyle(fontSize: 16.0),
+        Icon(
+          BeeIcon.noData,
+          size: 70,
+          color: Colors.grey[300],
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Text(
+            '暂无数据',
+            style: TextStyle(fontSize: 12.0, color: Colors.grey[400]),
+          ),
         )
       ],
     ));
@@ -266,7 +279,6 @@ class _BaseListLoadState extends State<BaseListLoad> {
     await setState(() {
       pageIndex = 1;
     });
-    print("pageIndex${pageIndex}");
     await _fetchData();
     return null;
   }
@@ -275,6 +287,7 @@ class _BaseListLoadState extends State<BaseListLoad> {
     if (widget.fetchData != null) {
       try {
         var fullData = await widget.fetchData(pageIndex, widget.pageSize);
+
         if (fullData is Map) {
           _setViewState(fullData);
         } else {
@@ -293,8 +306,8 @@ class _BaseListLoadState extends State<BaseListLoad> {
   _setViewState(Map<String, dynamic> data) {
     // 获取总的条数
     var _data = data["data"];
-    var totalCount = data["totalCount"];
-    int totalPage = (totalCount / widget.pageSize).ceil();
+    bool isNoMore = _data.length != widget.pageSize;
+    int totalPage = 100000;
 
     setState(() {
       try {
@@ -305,15 +318,14 @@ class _BaseListLoadState extends State<BaseListLoad> {
           list = new List.from(list)..addAll(_data);
         }
 
-        if (pageIndex < totalPage) {
-          // 还有数据可以加载
+        if (!isNoMore) {
+          // 还有数据可以加���
           footerState = RefreshState.CanLoadMore;
-          // 下次加载从第几条数据开始
+          // 下次加载从第几��数��开始
           pageIndex = pageIndex + 1;
         } else {
           footerState = RefreshState.NoMoreData;
         }
-
         _endRefreshing(footerState);
       } catch (e) {
         _endRefreshing(RefreshState.Failure);
