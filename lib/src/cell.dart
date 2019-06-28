@@ -68,9 +68,12 @@ class Cell extends StatelessWidget {
   Widget _renderCenter(BuildContext context) {
     var renderArr = <Widget>[];
 
-    // if (icon != null) {
-    //   renderArr.add(icon);
-    // }
+    if (icon != null) {
+      renderArr.add(Padding(
+        child: icon,
+        padding: EdgeInsets.only(left: 15, right: 10),
+      ));
+    }
 
     if (title != null) {
       renderArr.add(title);

@@ -26,6 +26,7 @@ class InputText extends StatefulWidget {
   final Widget prefix;
   final bool enableInteractiveSelection;
   final bool isShowCleanIcon;
+  final EdgeInsets margin;
 
   @override
   _InputTextState createState() => _InputTextState();
@@ -51,6 +52,7 @@ class InputText extends StatefulWidget {
       this.suffix,
       this.prefix,
       this.autofocus = false,
+      this.margin,
       this.isShowCleanIcon = true,
       this.maxLength = 30})
       : super(key: key);
@@ -100,7 +102,7 @@ class _InputTextState extends State<InputText> {
           // margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: Text(widget.label,
               textAlign: TextAlign.left,
-              style: TextStyle(color: Colors.grey[700], fontSize: 12.0)));
+              style: TextStyle(color: Colors.black87, fontSize: 12.0)));
       hd.add(_label);
     }
     return Row(
@@ -205,6 +207,7 @@ class _InputTextState extends State<InputText> {
           // prefixStyle: labelStyle,
           contentPadding: EdgeInsets.fromLTRB(0, 5, 5, 5),
           hintText: widget.placeholder,
+          hintStyle:TextStyle(color: Colors.black26) ,
           counterText: "",
           // border: OutlineInputBorder(
           //     borderRadius: BorderRadius.circular(15),
@@ -274,8 +277,8 @@ class _InputTextState extends State<InputText> {
     // );
 
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: widget.margin ?? EdgeInsets.fromLTRB(0, 8, 0, 8),
+      // padding: EdgeInsets.symmetric(vertical: 8),
       child: buildTextField(),
     );
   }

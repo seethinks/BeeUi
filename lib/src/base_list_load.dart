@@ -27,7 +27,7 @@ class BaseListLoad extends StatefulWidget {
       {Key key,
       this.initLoadingView,
       this.pageSize = 10,
-      this.isNeedScroll = true})
+      this.isNeedScroll = false})
       : super(key: key);
 
   _BaseListLoadState baseListLoad = new _BaseListLoadState();
@@ -85,10 +85,8 @@ class _BaseListLoadState extends State<BaseListLoad> {
   }
 
   _startHeaderRefreshing() {
-    setState(() {
-      isHeaderRefreshing = true;
-      _onRefresh();
-    });
+    isHeaderRefreshing = true;
+    _onRefresh();
   }
 
   /// 开始加载更多
@@ -117,7 +115,7 @@ class _BaseListLoadState extends State<BaseListLoad> {
 
   @override
   Widget build(BuildContext context) {
-    // 初始化的时候显示加载中
+    //初始化的时候显示加载中
     if (isFirst) {
       return _renderLoading();
     }
@@ -145,18 +143,36 @@ class _BaseListLoadState extends State<BaseListLoad> {
     );
   }
 
+  dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
   Widget _renderInitError() {
     return new Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
-            '亲的网络有点问题~',
-            style: TextStyle(fontSize: 16.0),
+          Icon(
+            BeeIcon.netError,
+            size: 100,
+            color: Colors.grey[500],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Text(
+              '亲的网络有点问题~',
+              style: TextStyle(fontSize: 12.0, color: Colors.grey[400]),
+            ),
           ),
           Padding(padding: EdgeInsets.only(bottom: 10)),
-          Button("重新加载", type: ButtonType.gost, onPress: _onReloadBtn)
+          Button(
+            "重新加载",
+            type: ButtonType.gost,
+            onPress: _onReloadBtn,
+            radius: 30,
+          )
         ],
       ),
     );
@@ -203,7 +219,6 @@ class _BaseListLoadState extends State<BaseListLoad> {
 
   Widget _renderRow(context, index) {
     if (index < list.length) {
-      print("${index}");
       return widget.renderRow(list[index], index);
     }
 
@@ -236,21 +251,22 @@ class _BaseListLoadState extends State<BaseListLoad> {
   }
 
   Widget _noMore() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '暂无更多',
-              style: TextStyle(fontSize: 16.0),
-            ),
-          ],
-        ),
-      ),
-    );
+    return Container();
+    // return Center(
+    //   child: Padding(
+    //     padding: EdgeInsets.all(10.0),
+    //     child: Row(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       crossAxisAlignment: CrossAxisAlignment.center,
+    //       children: <Widget>[
+    //         Text(
+    //           '暂无更多',
+    //           style: TextStyle(fontSize: 16.0),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _renderEmptyData() {
@@ -276,11 +292,8 @@ class _BaseListLoadState extends State<BaseListLoad> {
   }
 
   Future<void> _onRefresh() async {
-    await setState(() {
-      pageIndex = 1;
-    });
+    pageIndex = 1;
     await _fetchData();
-    return null;
   }
 
   _fetchData() async {
@@ -303,43 +316,44 @@ class _BaseListLoadState extends State<BaseListLoad> {
     _fetchData();
   }
 
-  _setViewState(Map<String, dynamic> data) {
+  _setViewState(Map<String, dynamic> data) async {
     // 获取总的条数
     var _data = data["data"];
     bool isNoMore = _data.length != widget.pageSize;
-    int totalPage = 100000;
+    String footerState;
 
     setState(() {
       try {
         // 第一次或者重新下拉加载的
-        if (pageIndex == 1) {
-          list = new List.from([])..addAll(_data);
-        } else {
-          list = new List.from(list)..addAll(_data);
-        }
+        // if (pageIndex == 1) {
+        //   list = new List.from([])..addAll(_data);
+        // } else {
+        //   list = list + _data;
+        // }
 
-        if (!isNoMore) {
-          // 还有数据可以加���
-          footerState = RefreshState.CanLoadMore;
-          // 下次加载从第几��数��开始
-          pageIndex = pageIndex + 1;
-        } else {
-          footerState = RefreshState.NoMoreData;
-        }
-        _endRefreshing(footerState);
+        list.addAll(_data);
       } catch (e) {
         _endRefreshing(RefreshState.Failure);
       }
     });
+
+    if (!isNoMore) {
+      // 还有数据可以加���
+      footerState = RefreshState.CanLoadMore;
+      // 下次加载从第几��数��开始
+      pageIndex = pageIndex + 1;
+    } else {
+      footerState = RefreshState.NoMoreData;
+    }
+    _endRefreshing(footerState);
   }
 
-  _endRefreshing(String footerState) {
-    String footerRefreshState = footerState;
+  _endRefreshing(String footerRefreshState) {
+    footerState = footerRefreshState;
+    isHeaderRefreshing = false;
+    isFooterRefreshing = false;
     setState(() {
-      footerState = footerRefreshState;
       isInitError = isFirst && footerState == RefreshState.Failure;
-      isHeaderRefreshing = false;
-      isFooterRefreshing = false;
       isFirst = false;
     });
   }

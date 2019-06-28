@@ -22,7 +22,7 @@ class XSelect extends StatelessWidget {
       this.onPress,
       this.layout = FormLayout.horizontal})
       : super(key: key);
-  Widget buildTextField() {
+  Widget buildField() {
     const TextStyle labelStyle = TextStyle(color: Colors.white, fontSize: 12.0);
     bool isVertical = layout == FormLayout.vertical;
     var arr = <Widget>[];
@@ -35,7 +35,7 @@ class XSelect extends StatelessWidget {
 
     var textField = Container(
         margin: EdgeInsets.fromLTRB(isVertical ? 0 : 10, 0, 0, 0),
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
         decoration: decoration,
         // decoration: BoxDecoration(color: Color(0xFFe8e8e8)),
         child: Row(
@@ -46,7 +46,7 @@ class XSelect extends StatelessWidget {
             Icon(
               BeeIcon.rightArrow,
               color: Colors.grey,
-              size: 22,
+              size: 18,
             )
           ],
         ));
@@ -65,19 +65,19 @@ class XSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     decoration = BoxDecoration(
-      border: Border(bottom: BorderSide(color: Color(0xFFe8e8e8), width: 1)),
-    );
+        // border: Border(bottom: BorderSide(color: Color(0xFFe8e8e8), width: 1)),
+        );
 
     return Container(
-        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        // margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
         child: InkWell(
-          key: key,
-          onTap: () {
-            if (disabled is bool && disabled == false && onPress is Function) {
-              onPress();
-            }
-          },
-          child: buildTextField(),
-        ));
+      key: key,
+      onTap: () {
+        if (disabled is bool && disabled == false && onPress is Function) {
+          onPress();
+        }
+      },
+      child: buildField(),
+    ));
   }
 }

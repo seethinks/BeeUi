@@ -13,18 +13,22 @@ class _CheckBoxState extends State<CheckBox> {
   @override
   Widget build(BuildContext context) {
     List<Widget> arr = [
-      Checkbox(
-        value: _checkboxSelected,
-        activeColor: Colors.red, //选中时的颜色
-        onChanged: (value) {
-          // setState(() {
-          //   _checkboxSelected = value;
-          // });
-          if (widget.onChange is Function) {
-            widget.onChange(_checkboxSelected);
-          }
-        },
-      )
+      Transform.scale(
+          scale: 0.8,
+          child: Checkbox(
+            tristate: true,
+            value: _checkboxSelected,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            activeColor: Theme.of(context).primaryColor, //选中时的颜色
+            onChanged: (value) {
+              // setState(() {
+              //   _checkboxSelected = value;
+              // });
+              if (widget.onChange is Function) {
+                widget.onChange(_checkboxSelected);
+              }
+            },
+          ))
     ];
 
     if (widget.label != null) {

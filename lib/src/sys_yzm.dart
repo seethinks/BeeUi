@@ -30,6 +30,7 @@ class _SysYzmState extends State<SysYzm> {
             width: 1.0,
             color: Colors.blue,
           ),
+          borderRadius: BorderRadius.all(const Radius.circular(4))
         ),
         child: new Text(
           '$_verifyStr',

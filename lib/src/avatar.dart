@@ -28,7 +28,6 @@ class Avatar extends StatelessWidget {
       _icon = icon;
     }
 
-    print(shape);
     final bool isLocal = isLocalAsset(src);
 
     return Container(
