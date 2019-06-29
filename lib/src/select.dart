@@ -7,7 +7,7 @@ class XSelect extends StatelessWidget {
   BoxDecoration decoration;
   final String label;
   final FormLayout layout;
-  final String placeholder;
+  final String title;
   final bool disabled;
   final Function onPress;
   final String value;
@@ -15,9 +15,9 @@ class XSelect extends StatelessWidget {
   XSelect(
       {Key key,
       this.decoration,
-      this.value,
+      this.value = "",
       this.label,
-      this.placeholder,
+      this.title,
       this.disabled = false,
       this.onPress,
       this.layout = FormLayout.horizontal})
@@ -36,17 +36,19 @@ class XSelect extends StatelessWidget {
     var textField = Container(
         margin: EdgeInsets.fromLTRB(isVertical ? 0 : 10, 0, 0, 0),
         padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
-        decoration: decoration,
-        // decoration: BoxDecoration(color: Color(0xFFe8e8e8)),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Expanded(
-              child: Text(value != null ? value : placeholder),
-            ),
-            Icon(
-              BeeIcon.rightArrow,
-              color: Colors.grey,
-              size: 18,
+            Text(title),
+            Row(
+              children: <Widget>[
+                Text(value),
+                Icon(
+                  BeeIcon.rightArrow,
+                  color: Colors.grey,
+                  size: 18,
+                )
+              ],
             )
           ],
         ));
@@ -65,19 +67,20 @@ class XSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     decoration = BoxDecoration(
+
         // border: Border(bottom: BorderSide(color: Color(0xFFe8e8e8), width: 1)),
         );
 
     return Container(
-        // margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+        decoration: BoxDecoration(color: Colors.grey[100]),
         child: InkWell(
-      key: key,
-      onTap: () {
-        if (disabled is bool && disabled == false && onPress is Function) {
-          onPress();
-        }
-      },
-      child: buildField(),
-    ));
+          key: key,
+          onTap: () {
+            if (disabled is bool && disabled == false && onPress is Function) {
+              onPress();
+            }
+          },
+          child: buildField(),
+        ));
   }
 }

@@ -13,4 +13,5 @@ export './src/img_verify_code.dart';
 export './src/sys_yzm.dart';
 export './src/checkbox.dart';
 export './src/eye.dart';
+export './src/img_upload.dart';
 export './src/util/index.dart';

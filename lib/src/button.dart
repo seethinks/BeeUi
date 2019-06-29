@@ -16,28 +16,26 @@ class Button extends StatelessWidget {
     this.disabled,
     this.type = ButtonType.primary,
     this.size,
-    this.radius = 2,
+    this.radius = 4,
     this.onPress,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (type == ButtonType.primary) {
-      return SizedBox(
-          height: 30,
-          child: FlatButton(
-            padding: EdgeInsets.all(0),
-            onPressed: disabled == true ? null : _log,
-            child: Text(text, style: TextStyle(fontSize: 12)),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Colors.white,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(radius)),
-          ));
+      return FlatButton(
+        padding: EdgeInsets.all(0),
+        onPressed: disabled == true ? null : _log,
+        child: Text(text, style: TextStyle(fontSize: 12)),
+        color: Theme.of(context).primaryColor,
+        textColor: Colors.white,
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.white,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(radius)),
+      );
     }
 
     if (type == ButtonType.gost) {

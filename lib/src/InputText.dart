@@ -160,7 +160,8 @@ class _InputTextState extends State<InputText> {
   Widget _renderTextField() {
     return TextFormField(
         controller: widget.controller,
-        focusNode: widget.focusNode,
+        // focusNode: widget.focusNode,
+        focusNode: _focus,
         cursorColor: Theme.of(context).primaryColor,
         maxLength: widget.maxLength,
         enableInteractiveSelection: widget.enableInteractiveSelection,
@@ -207,7 +208,7 @@ class _InputTextState extends State<InputText> {
           // prefixStyle: labelStyle,
           contentPadding: EdgeInsets.fromLTRB(0, 5, 5, 5),
           hintText: widget.placeholder,
-          hintStyle:TextStyle(color: Colors.black26) ,
+          hintStyle: TextStyle(color: Colors.black26),
           counterText: "",
           // border: OutlineInputBorder(
           //     borderRadius: BorderRadius.circular(15),
