@@ -23,28 +23,33 @@ class Avatar extends StatelessWidget {
   Widget build(BuildContext context) {
     Image _img;
     Icon _icon;
+    bool isLocal;
 
     if (icon != null) {
       _icon = icon;
     }
 
-    final bool isLocal = isLocalAsset(src);
+    if (src != null) {
+      isLocal = isLocalAsset(src);
+    }
 
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        shape:
-            shape == AvatarShape.circle ? BoxShape.circle : BoxShape.rectangle,
-        borderRadius: shape == AvatarShape.square
-            ? BorderRadius.circular(6.0)
-            : null, // 圆形不能设置borderRadius
-        image: DecorationImage(
-          image: isLocal == true ? AssetImage(src) : NetworkImage(src),
-        ),
-        color: Colors.grey[300],
-      ),
-      // child: _img,
+          shape: shape == AvatarShape.circle
+              ? BoxShape.circle
+              : BoxShape.rectangle,
+          borderRadius: shape == AvatarShape.square
+              ? BorderRadius.circular(6.0)
+              : null, // 圆形不能设置borderRadius
+          image: src != null
+              ? DecorationImage(
+                  image: isLocal == true ? AssetImage(src) : NetworkImage(src),
+                )
+              : null,
+          color: Colors.grey[300]),
+      child: _icon,
     );
     // );
   }

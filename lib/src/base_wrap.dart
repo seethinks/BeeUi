@@ -7,9 +7,15 @@ class BaseWrap extends StatefulWidget {
   final Widget bottomNavigationBar;
   final AppBar appbar;
   final EdgeInsets padding;
+  final bool defaultShowTitle;
 
   BaseWrap(
-      {Key key, this.appbar, this.bottomNavigationBar, this.body, this.padding})
+      {Key key,
+      this.appbar,
+      this.bottomNavigationBar,
+      this.defaultShowTitle = false,
+      this.body,
+      this.padding})
       : super(key: key);
   @override
   _BaseWrapState createState() => _BaseWrapState();
@@ -21,7 +27,7 @@ class _BaseWrapState extends State<BaseWrap> {
   ScrollController _scrollController;
 
   _scrollListener() {
-    if (isShrink != lastStatus) {
+    if (widget.defaultShowTitle == null && isShrink != lastStatus) {
       setState(() {
         lastStatus = isShrink;
         setTitle();
@@ -30,7 +36,9 @@ class _BaseWrapState extends State<BaseWrap> {
   }
 
   setTitle() {
-    title = lastStatus ? widget.appbar.title : Container();
+    title = lastStatus || widget.defaultShowTitle
+        ? widget.appbar.title
+        : Container();
   }
 
   bool get isShrink {
@@ -42,8 +50,10 @@ class _BaseWrapState extends State<BaseWrap> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    title = widget.appbar.title;
-    setTitle();
+    if (widget.appbar != null && widget.appbar.title != null) {
+      title = widget.appbar.title;
+      setTitle();
+    }
     super.initState();
   }
 
@@ -69,20 +79,24 @@ class _BaseWrapState extends State<BaseWrap> {
     }
 
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: PreferredSize(
-            //自定义导航栏高度
-            preferredSize: Size.fromHeight(DefaultConfig.appBarHeight),
-            child: AppBar(
-                leading: widget.appbar.leading != null
-                    ? widget.appbar.leading
-                    : null,
-                elevation: widget.appbar.elevation ?? 0,
-                title: title,
-                centerTitle: true,
-                brightness: widget.appbar.brightness ?? Brightness.dark,
-                backgroundColor: widget.appbar.backgroundColor ?? Colors.white,
-                actions: widget.appbar.actions)),
+        // backgroundColor: Colors.white,
+        appBar: widget.appbar != null
+            ? PreferredSize(
+                //自定义导航栏高度
+                preferredSize: Size.fromHeight(DefaultConfig.appBarHeight),
+                child: AppBar(
+                    leading: widget.appbar.leading != null
+                        ? widget.appbar.leading
+                        : null,
+                    elevation: widget.appbar.elevation ?? 0,
+                    title: title,
+                    centerTitle: true,
+                    bottom: widget.appbar.bottom,
+                    brightness: widget.appbar.brightness ?? Brightness.dark,
+                    backgroundColor: widget.appbar.backgroundColor ??
+                        Theme.of(context).primaryColor,
+                    actions: widget.appbar.actions))
+            : null,
         bottomNavigationBar: widget.bottomNavigationBar,
         body: Builder(
           builder: (context) => CustomScrollView(
