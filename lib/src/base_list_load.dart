@@ -27,7 +27,7 @@ class BaseListLoad extends StatefulWidget {
       {Key key,
       this.initLoadingView,
       this.pageSize = 10,
-      this.isNeedScroll = false})
+      this.isNeedScroll = true})
       : super(key: key);
 
   _BaseListLoadState baseListLoad = new _BaseListLoadState();

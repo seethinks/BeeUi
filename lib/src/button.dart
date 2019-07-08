@@ -7,6 +7,7 @@ class Button extends StatelessWidget {
   String size;
   String text;
   final double radius;
+  final Color color;
   bool disabled;
   Function onPress;
 
@@ -16,6 +17,7 @@ class Button extends StatelessWidget {
     this.disabled,
     this.type = ButtonType.primary,
     this.size,
+    this.color,
     this.radius = 4,
     this.onPress,
   }) : super(key: key);
@@ -24,10 +26,10 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     if (type == ButtonType.primary) {
       return FlatButton(
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.symmetric(vertical: 10),
         onPressed: disabled == true ? null : _log,
-        child: Text(text, style: TextStyle(fontSize: 12)),
-        color: Theme.of(context).primaryColor,
+        child: Text(text, style: TextStyle(fontSize: 14)),
+        color: color ?? Theme.of(context).primaryColor,
         textColor: Colors.white,
         shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -42,7 +44,8 @@ class Button extends StatelessWidget {
       return OutlineButton(
         onPressed: disabled == true ? null : _log,
         child: Text(text),
-        borderSide: new BorderSide(color: Theme.of(context).primaryColor),
+        borderSide:
+            new BorderSide(color: color ?? Theme.of(context).primaryColor),
         textColor: Theme.of(context).primaryColor,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),

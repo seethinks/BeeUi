@@ -7,59 +7,47 @@ class BaseWrap extends StatefulWidget {
   final Widget bottomNavigationBar;
   final AppBar appbar;
   final EdgeInsets padding;
-  final bool defaultShowTitle;
+  final bool isScroll;
 
   BaseWrap(
       {Key key,
       this.appbar,
       this.bottomNavigationBar,
-      this.defaultShowTitle = false,
+      this.isScroll = false,
       this.body,
       this.padding})
-      : super(key: key);
+      : assert(isScroll != null),
+        super(key: key);
   @override
   _BaseWrapState createState() => _BaseWrapState();
 }
 
 class _BaseWrapState extends State<BaseWrap> {
   Widget title;
-  bool lastStatus = false;
-  ScrollController _scrollController;
-
-  _scrollListener() {
-    if (widget.defaultShowTitle == null && isShrink != lastStatus) {
-      setState(() {
-        lastStatus = isShrink;
-        setTitle();
-      });
-    }
-  }
-
-  setTitle() {
-    title = lastStatus || widget.defaultShowTitle
-        ? widget.appbar.title
-        : Container();
-  }
-
-  bool get isShrink {
-    return _scrollController.hasClients &&
-        _scrollController.offset > (80 - kToolbarHeight);
-  }
+  Size preferredSize;
 
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-    if (widget.appbar != null && widget.appbar.title != null) {
-      title = widget.appbar.title;
-      setTitle();
+    // _scrollController = ScrollController();
+    // _scrollController.addListener(_scrollListener);
+    if (widget.appbar != null) {
+      if (widget.appbar.title != null) {
+        title = widget.appbar.title;
+      }
+      preferredSize = new Size.fromHeight(kToolbarHeight -
+          8 +
+          (widget.appbar.bottom?.preferredSize?.height ?? 0.0));
+      //   setTitle();
+
+      print("preferredSize${preferredSize.height}");
     }
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_scrollListener);
+    // _scrollController.removeListener(_scrollListener);
     super.dispose();
   }
 
@@ -68,8 +56,9 @@ class _BaseWrapState extends State<BaseWrap> {
     if (title != null) {
       title = DefaultTextStyle(
         style: TextStyle(
-          fontSize: 14,
-          color: isShrink ? Colors.black : Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
         ),
         child: Semantics(
           child: title,
@@ -83,7 +72,7 @@ class _BaseWrapState extends State<BaseWrap> {
         appBar: widget.appbar != null
             ? PreferredSize(
                 //自定义导航栏高度
-                preferredSize: Size.fromHeight(DefaultConfig.appBarHeight),
+                preferredSize: Size.fromHeight(preferredSize.height),
                 child: AppBar(
                     leading: widget.appbar.leading != null
                         ? widget.appbar.leading
@@ -99,23 +88,30 @@ class _BaseWrapState extends State<BaseWrap> {
             : null,
         bottomNavigationBar: widget.bottomNavigationBar,
         body: Builder(
-          builder: (context) => CustomScrollView(
-                controller: _scrollController,
-                // key 保证唯一性
-                slivers: <Widget>[
-                  // 将子部件同 `SliverAppBar` 重叠部分顶出来，否则会被遮挡
-                  // SliverOverlapInjector(
-                  //     handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                  //         context)),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding:
-                          widget.padding ?? EdgeInsets.fromLTRB(15, 5, 15, 15),
-                      child: widget.body,
-                    ),
-                  )
-                ],
+          builder: (context) => Padding(
+                padding: widget.padding ?? EdgeInsets.fromLTRB(15, 20, 15, 15),
+                child: !widget.isScroll
+                    ? widget.body
+                    : SingleChildScrollView(child: widget.body),
               ),
+
+          // builder: (context) => CustomScrollView(
+          //   controller: _scrollController,
+          //   // key 保证唯一性
+          //   slivers: <Widget>[
+          //     // 将子部件同 `SliverAppBar` 重叠部分顶出来，否则会被遮挡
+          //     // SliverOverlapInjector(
+          //     //     handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+          //     //         context)),
+          //     SliverToBoxAdapter(
+          //       child: Padding(
+          //         padding:
+          //             widget.padding ?? EdgeInsets.fromLTRB(15, 5, 15, 15),
+          //         child: widget.body,
+          //       ),
+          //     )
+          //   ],
+          // ),
         ));
 
     // return Scaffold(
