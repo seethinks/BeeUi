@@ -69,6 +69,13 @@ class _InputTextState extends State<InputText> {
     _focus.addListener(_onFocusChange);
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _focus.removeListener(_onFocusChange);
+  }
+
   void _onFocusChange() {
     setState(() {
       isFocus = _focus.hasFocus;
@@ -136,7 +143,7 @@ class _InputTextState extends State<InputText> {
             border: Border(
                 bottom: BorderSide(
                     color: isFocus
-                        ? Theme.of(context).primaryColor
+                        ? Theme.of(context).accentColor
                         : Colors.grey[200],
                     width: 1))),
         child: Row(
@@ -162,7 +169,7 @@ class _InputTextState extends State<InputText> {
         controller: widget.controller,
         // focusNode: widget.focusNode,
         focusNode: _focus,
-        cursorColor: Theme.of(context).primaryColor,
+        cursorColor: Theme.of(context).cursorColor,
         maxLength: widget.maxLength,
         enableInteractiveSelection: widget.enableInteractiveSelection,
         maxLines: 1, //最大行数
@@ -208,7 +215,7 @@ class _InputTextState extends State<InputText> {
           // prefixStyle: labelStyle,
           contentPadding: EdgeInsets.fromLTRB(0, 5, 5, 5),
           hintText: widget.placeholder,
-          hintStyle: TextStyle(color: Colors.black26),
+          hintStyle: TextStyle(color: Theme.of(context).hintColor),
           counterText: "",
           // border: OutlineInputBorder(
           //     borderRadius: BorderRadius.circular(15),
@@ -272,10 +279,6 @@ class _InputTextState extends State<InputText> {
     if (widget.icon != null) {
       widget.label = null;
     }
-
-    // decoration = BoxDecoration(
-    //   border: Border(bottom: BorderSide(color: Color(0xFFe8e8e8), width: 1)),
-    // );
 
     return Container(
       padding: widget.margin ?? EdgeInsets.fromLTRB(0, 8, 0, 8),

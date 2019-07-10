@@ -202,7 +202,7 @@ class _BaseListLoadState extends State<BaseListLoad> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   CircularProgressIndicator(
-                    strokeWidth: 1.0,
+                    strokeWidth: 3.0,
                   ),
                   Padding(
                     padding: EdgeInsets.all(10.0),

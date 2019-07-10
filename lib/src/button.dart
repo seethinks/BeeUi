@@ -29,14 +29,14 @@ class Button extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         onPressed: disabled == true ? null : _log,
         child: Text(text, style: TextStyle(fontSize: 14)),
-        color: color ?? Theme.of(context).primaryColor,
+        color: color ?? Theme.of(context).buttonColor,
         textColor: Colors.white,
-        shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Colors.white,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(radius)),
+        // shape: RoundedRectangleBorder(
+        //     side: BorderSide(
+        //       color: Colors.white,
+        //       width: 1,
+        //     ),
+        //     borderRadius: BorderRadius.circular(radius)),
       );
     }
 

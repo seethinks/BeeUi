@@ -99,7 +99,6 @@ class Cell extends StatelessWidget {
     if (arrow) {
       renderArr.add(Icon(
         BeeIcon.rightArrow,
-        color: Colors.black,
         size: 18,
       ));
     }

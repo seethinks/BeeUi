@@ -53,19 +53,19 @@ class _BaseWrapState extends State<BaseWrap> {
 
   @override
   Widget build(BuildContext context) {
-    if (title != null) {
-      title = DefaultTextStyle(
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-          color: Colors.white,
-        ),
-        child: Semantics(
-          child: title,
-          header: true,
-        ),
-      );
-    }
+    // if (title != null) {
+    //   title = DefaultTextStyle(
+    //     style: TextStyle(
+    //       fontSize: 16,
+    //       fontWeight: FontWeight.w700,
+    //       color: Colors.red,
+    //     ),
+    //     child: Semantics(
+    //       child: title,
+    //       header: true,
+    //     ),
+    //   );
+    // }
 
     return Scaffold(
         // backgroundColor: Colors.white,
@@ -77,8 +77,8 @@ class _BaseWrapState extends State<BaseWrap> {
                     leading: widget.appbar.leading != null
                         ? widget.appbar.leading
                         : null,
-                    elevation: widget.appbar.elevation ?? 0,
-                    title: title,
+                    elevation: widget.appbar.elevation ?? 0.5,
+                    title: widget.appbar.title,
                     centerTitle: true,
                     bottom: widget.appbar.bottom,
                     brightness: widget.appbar.brightness ?? Brightness.dark,

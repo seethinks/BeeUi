@@ -26,12 +26,9 @@ class _SysYzmState extends State<SysYzm> {
         width: 100.0,
         height: 36.0,
         decoration: new BoxDecoration(
-          border: new Border.all(
-            width: 1.0,
-            color: Colors.blue,
-          ),
-          borderRadius: BorderRadius.all(const Radius.circular(4))
-        ),
+            border: new Border.all(
+                width: 1.0, color: Theme.of(context).textTheme.body1.color),
+            borderRadius: BorderRadius.all(const Radius.circular(4))),
         child: new Text(
           '$_verifyStr',
           style: new TextStyle(fontSize: 14.0),
