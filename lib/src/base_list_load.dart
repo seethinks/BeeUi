@@ -22,20 +22,22 @@ class BaseListLoad extends StatefulWidget {
   bool desablePullUp; // 禁止上拉
   bool desablePullDown; //禁止下拉
   bool isNeedScroll;
+  bool isReload;
 
   BaseListLoad(this.fetchData, this.renderRow,
       {Key key,
       this.initLoadingView,
       this.pageSize = 10,
+      this.isReload,
       this.isNeedScroll = true})
       : super(key: key);
 
-  _BaseListLoadState baseListLoad = new _BaseListLoadState();
+  // _BaseListLoadState baseListLoad = new _BaseListLoadState();
   @override
-  _BaseListLoadState createState() => baseListLoad;
-  void reload() {
-    baseListLoad.reload();
-  }
+  _BaseListLoadState createState() => new _BaseListLoadState();
+  // void reload() {
+  //   baseListLoad.reload();
+  // }
 
   // @override
   // _BaseListLoadState createState() => _BaseListLoadState();
@@ -56,6 +58,10 @@ class _BaseListLoadState extends State<BaseListLoad> {
   void initState() {
     _scrollController.addListener(_onScrollHandle);
     _beginHeaderRefresh();
+  }
+
+  didchangedependencies() {
+    print("object");
   }
 
   _onScrollHandle() {
@@ -325,13 +331,11 @@ class _BaseListLoadState extends State<BaseListLoad> {
     setState(() {
       try {
         // 第一次或者重新下拉加载的
-        // if (pageIndex == 1) {
-        //   list = new List.from([])..addAll(_data);
-        // } else {
-        //   list = list + _data;
-        // }
-
-        list.addAll(_data);
+        if (pageIndex == 1) {
+          list = new List.from([])..addAll(_data);
+        } else {
+          list.addAll(_data);
+        }
       } catch (e) {
         _endRefreshing(RefreshState.Failure);
       }

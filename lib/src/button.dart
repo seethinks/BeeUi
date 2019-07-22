@@ -22,13 +22,36 @@ class Button extends StatelessWidget {
     this.onPress,
   }) : super(key: key);
 
+  void _getWH() {
+    final containerWidth = globalKey.currentContext.size.width;
+    final containerHeight = globalKey.currentContext.size.height;
+    print('Container widht is $containerWidth, height is $containerHeight');
+  }
+
+  final GlobalKey globalKey = GlobalKey();
+
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+  }
+
+  void _afterLayout(_) {
+    _getSizes();
+  }
+
+  _getSizes() {
+    final RenderBox renderBoxRed = globalKey.currentContext.findRenderObject();
+    final sizeRed = renderBoxRed.size;
+    print("SIZE of Red: $sizeRed");
+  }
+
   @override
   Widget build(BuildContext context) {
     if (type == ButtonType.primary) {
       return FlatButton(
+        key: globalKey,
         padding: EdgeInsets.symmetric(vertical: 10),
         onPressed: disabled == true ? null : _log,
-        child: Text(text, style: TextStyle(fontSize: 14)),
+        child: Text(text, style: TextStyle(fontSize: 12)),
         color: color ?? Theme.of(context).buttonColor,
         textColor: Colors.white,
         // shape: RoundedRectangleBorder(
