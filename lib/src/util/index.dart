@@ -31,14 +31,63 @@ class BeeUi {
         builder: (BuildContext context) {
           return new Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(16))),
-              padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
+              // padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[builder(context)],
               ));
         });
+  }
+
+  static showBottomButtonsModal(
+      {@required BuildContext context,
+      @required List<Widget> buttons,
+      bool dismissOnTap = true}) {
+    assert(context != null);
+    assert(buttons != null);
+
+    buttons.add(Container(
+      color: Colors.black,
+      height: 5,
+    ));
+    buttons.add(ListTile(
+        title: Text("取消",
+            style: TextStyle(color: Theme.of(context).textTheme.body1.color),
+            textAlign: TextAlign.center)));
+
+    return BeeUi.showBottomModal(
+        context: context,
+        builder: (BuildContext context) {
+          return Column(
+              children: ListTile.divideTiles(
+            context: context,
+            tiles: buttons,
+          ).toList());
+        });
+  }
+
+  static alert(BuildContext context,
+      {Text title, Text content, List<Widget> actions}) {
+    return showDialog(
+        context: context,
+        // builder: (context) {
+        //   return Theme(
+        //     data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.orange),
+        //     child: AlertDialog(
+        //       title: title,
+        //       content: content,
+        //       actions: actions,
+        //     ),
+        //   );
+        // };
+
+        builder: (context) => AlertDialog(
+              title: title,
+              content: content,
+              actions: actions,
+            ));
   }
 }

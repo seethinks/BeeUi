@@ -109,7 +109,7 @@ class _InputTextState extends State<InputText> {
           // margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: Text(widget.label,
               textAlign: TextAlign.left,
-              style: TextStyle(color: Colors.black87, fontSize: 12.0)));
+              style: TextStyle(color: Colors.white, fontSize: 12.0)));
       hd.add(_label);
     }
     return Row(
@@ -144,7 +144,7 @@ class _InputTextState extends State<InputText> {
                 bottom: BorderSide(
                     color: isFocus
                         ? Theme.of(context).accentColor
-                        : Colors.grey[200],
+                        : Theme.of(context).dividerColor,
                     width: 1))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

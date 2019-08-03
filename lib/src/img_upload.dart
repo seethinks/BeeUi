@@ -77,30 +77,41 @@ class _ImgUploadState extends State<ImgUpload> {
   }
 
   Future showModal() {
-    BeeUi.showBottomModal(
-        context: ctx,
-        title: null,
-        builder: (BuildContext context) {
-          return Column(
-              children: ListTile.divideTiles(
-            context: context,
-            tiles: [
-              ListTile(
-                title: Text("拍摄照片", textAlign: TextAlign.center),
-                contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-                onTap: fromCamera,
-              ),
-              ListTile(
-                title: Text("从手机相册选择", textAlign: TextAlign.center),
-                onTap: fromGallery,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              ListTile(title: Text("取消", textAlign: TextAlign.center)),
-            ],
-          ).toList());
-        });
+    BeeUi.showBottomButtonsModal(context: ctx, buttons: [
+      ListTile(
+        title: Text("拍摄照片",
+            style: TextStyle(color: Theme.of(context).textTheme.body1.color),
+            textAlign: TextAlign.center),
+        contentPadding: EdgeInsets.symmetric(vertical: 0.0),
+        onTap: fromCamera,
+      ),
+      ListTile(
+        title: Text("从手机相册选择",
+            style: TextStyle(color: Theme.of(context).textTheme.body1.color),
+            textAlign: TextAlign.center),
+        onTap: fromGallery,
+      )
+    ]);
+    // BeeUi.showBottomModal(
+    //     context: ctx,
+    //     title: null,
+    //     builder: (BuildContext context) {
+    //       return Column(
+    //           children: ListTile.divideTiles(
+    //         context: context,
+    //         tiles: [
+    //           ListTile(
+    //             title: Text("拍摄照片", textAlign: TextAlign.center),
+    //             contentPadding: EdgeInsets.symmetric(vertical: 0.0),
+    //             onTap: fromCamera,
+    //           ),
+    //           ListTile(
+    //             title: Text("从手机相册选择", textAlign: TextAlign.center),
+    //             onTap: fromGallery,
+    //           ),
+    //         ],
+    //       ).toList());
+    //     });
   }
 
   //从相机

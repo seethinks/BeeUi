@@ -72,7 +72,7 @@ class XSelect extends StatelessWidget {
         );
 
     return Container(
-        decoration: BoxDecoration(color: Colors.grey[100]),
+        // decoration: BoxDecoration(color: Colors.grey[100]),
         child: InkWell(
           key: key,
           onTap: () {

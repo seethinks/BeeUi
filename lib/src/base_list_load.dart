@@ -24,20 +24,27 @@ class BaseListLoad extends StatefulWidget {
   bool isNeedScroll;
   bool isReload;
 
-  BaseListLoad(this.fetchData, this.renderRow,
-      {Key key,
-      this.initLoadingView,
-      this.pageSize = 10,
-      this.isReload,
-      this.isNeedScroll = true})
-      : super(key: key);
+  ValueNotifierData reLoadData = new ValueNotifierData("reLoad");
+  ValueNotifierData filterData = new ValueNotifierData("filter");
+
+  BaseListLoad(
+    this.fetchData,
+    this.renderRow, {
+    Key key,
+    this.initLoadingView,
+    this.pageSize = 10,
+    this.isReload,
+    this.isNeedScroll = true,
+  }) : super(key: key);
 
   // _BaseListLoadState baseListLoad = new _BaseListLoadState();
   @override
   _BaseListLoadState createState() => new _BaseListLoadState();
-  // void reload() {
-  //   baseListLoad.reload();
-  // }
+
+  void reload() {
+    var a = Random().nextInt(999999999);
+    reLoadData.value = a.toString();
+  }
 
   // @override
   // _BaseListLoadState createState() => _BaseListLoadState();
@@ -58,6 +65,14 @@ class _BaseListLoadState extends State<BaseListLoad> {
   void initState() {
     _scrollController.addListener(_onScrollHandle);
     _beginHeaderRefresh();
+    widget.reLoadData.addListener(_handleReloadValueChanged);
+  }
+
+  void _handleReloadValueChanged() {
+    setState(() {
+      isFirst = true;
+    });
+    reload();
   }
 
   didchangedependencies() {
@@ -190,10 +205,7 @@ class _BaseListLoadState extends State<BaseListLoad> {
   }
 
   reload() {
-    setState(() {
-      isFirst = true;
-      _beginHeaderRefresh();
-    });
+    _beginHeaderRefresh();
   }
 
 //
@@ -361,4 +373,8 @@ class _BaseListLoadState extends State<BaseListLoad> {
       isFirst = false;
     });
   }
+}
+
+class ValueNotifierData extends ValueNotifier<String> {
+  ValueNotifierData(value) : super(value);
 }

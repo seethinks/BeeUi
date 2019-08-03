@@ -34,17 +34,11 @@ class _ButtonState extends State<Button> {
         key: globalKey,
         // padding: EdgeInsets.symmetric(vertical: 10),
         onPressed: widget.disabled == true ? null : _log,
-        child: Text(widget.text,
-            style: TextStyle(
-                fontSize:14)),
+        child: Text(widget.text, style: TextStyle(fontSize: 14)),
         color: widget.color ?? Theme.of(context).buttonColor,
         textColor: Colors.white,
-        // shape: RoundedRectangleBorder(
-        //     side: BorderSide(
-        //       color: Colors.white,
-        //       width: 1,
-        //     ),
-        //     borderRadius: BorderRadius.circular(radius)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(widget.radius)),
       );
     }
 
@@ -53,8 +47,8 @@ class _ButtonState extends State<Button> {
         onPressed: widget.disabled == true ? null : _log,
         child: Text(widget.text),
         borderSide: new BorderSide(
-            color: widget.color ?? Theme.of(context).primaryColor),
-        textColor: Theme.of(context).primaryColor,
+            color: widget.color ?? Theme.of(context).dividerColor),
+        textColor: widget.color ?? Theme.of(context).primaryColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(widget.radius)),
       );

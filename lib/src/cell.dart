@@ -40,8 +40,9 @@ class Cell extends StatelessWidget {
       flex: 1,
       child: Container(
         decoration: BoxDecoration(
-            border:
-                Border(bottom: BorderSide(color: Colors.grey[200], width: 1))),
+            border: Border(
+                bottom: BorderSide(
+                    color: Theme.of(context).dividerColor, width: 1))),
         height: 48,
         child: Row(
           children: <Widget>[
@@ -51,6 +52,8 @@ class Cell extends StatelessWidget {
         ),
       ),
     ));
+
+    //
 
     return Container(
         child: InkWell(
