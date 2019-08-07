@@ -15,3 +15,4 @@ export './src/eye.dart';
 export './src/img_upload.dart';
 export './src/util/index.dart';
 export './src/loader.dart';
+export './src/real_rich_text.dart';
