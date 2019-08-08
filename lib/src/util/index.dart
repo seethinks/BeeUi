@@ -70,7 +70,7 @@ class BeeUi {
   }
 
   static alert(BuildContext context,
-      {Text title, Text content, List<Widget> actions}) {
+      {Text title, Widget content, List<Widget> actions}) {
     return showDialog(
         context: context,
         // builder: (context) {
