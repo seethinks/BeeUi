@@ -16,3 +16,5 @@ export './src/img_upload.dart';
 export './src/util/index.dart';
 export './src/loader.dart';
 export './src/real_rich_text.dart';
+export './src/swiper.dart';
+export './src/util/navigator_observer_util.dart';
