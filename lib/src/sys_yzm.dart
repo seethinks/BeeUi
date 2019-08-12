@@ -66,7 +66,7 @@ class _SysYzmState extends State<SysYzm> {
       }
 
       _seconds--;
-      _verifyStr = '$_seconds(s)';
+      _verifyStr = '${_seconds}s';
       setState(() {});
       if (_seconds == 0) {
         _verifyStr = '重新发送';

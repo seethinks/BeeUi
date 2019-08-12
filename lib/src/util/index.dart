@@ -11,7 +11,7 @@ class BeeUi {
     assert(context != null);
     assert(builder != null);
 
-    const arr = [];
+    final List<Widget> arr = [];
 
     if (title != null) {
       arr.add(
