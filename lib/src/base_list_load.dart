@@ -210,29 +210,29 @@ class _BaseListLoadState extends State<BaseListLoad> {
 
 //
   Widget _renderLoading() {
-    return widget.initLoadingView != null
-        ? widget.initLoadingView
-        : Center(
-            child: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Column(
+    List<Widget> arr = <Widget>[];
+
+    if (widget.initLoadingView != null) {
+      arr.add(widget.initLoadingView);
+    } else {
+      arr.add(CircularProgressIndicator(
+        strokeWidth: 3.0,
+      ));
+      arr.add(Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Text(
+          '加载中',
+          style: TextStyle(fontSize: 16.0),
+        ),
+      ));
+    }
+    return Center(
+        child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  CircularProgressIndicator(
-                    strokeWidth: 3.0,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      '加载中',
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+                children: arr)));
   }
 
   Widget _renderRow(context, index) {
