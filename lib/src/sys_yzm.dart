@@ -77,4 +77,10 @@ class _SysYzmState extends State<SysYzm> {
   _cancelTimer() {
     _timer?.cancel();
   }
+
+  @override
+  void dispose() {
+    _cancelTimer();
+    super.dispose();
+  }
 }

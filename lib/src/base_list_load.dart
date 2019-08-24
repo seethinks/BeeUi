@@ -190,6 +190,7 @@ class _BaseListLoadState extends State<BaseListLoad> {
           Padding(padding: EdgeInsets.only(bottom: 10)),
           Button(
             "重新加载",
+            color: Theme.of(context).buttonColor,
             type: ButtonType.gost,
             onPress: _onReloadBtn,
             radius: 30,

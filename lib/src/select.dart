@@ -22,7 +22,7 @@ class XSelect extends StatelessWidget {
       this.onPress,
       this.layout = FormLayout.horizontal})
       : super(key: key);
-  Widget buildField() {
+  Widget buildField(BuildContext context) {
     const TextStyle labelStyle = TextStyle(color: Colors.white, fontSize: 12.0);
     bool isVertical = layout == FormLayout.vertical;
     var arr = <Widget>[];
@@ -39,10 +39,13 @@ class XSelect extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(title),
+            Text(value != "" ? value : title,
+                style: TextStyle(
+                    color: value != ""
+                        ? Colors.white
+                        : Theme.of(context).hintColor)),
             Row(
               children: <Widget>[
-                Text(value),
                 Icon(
                   BeeIcon.rightArrow,
                   color: Colors.grey,
@@ -74,13 +77,13 @@ class XSelect extends StatelessWidget {
     return Container(
         // decoration: BoxDecoration(color: Colors.grey[100]),
         child: InkWell(
-          key: key,
-          onTap: () {
-            if (disabled is bool && disabled == false && onPress is Function) {
-              onPress();
-            }
-          },
-          child: buildField(),
-        ));
+      key: key,
+      onTap: () {
+        if (disabled is bool && disabled == false && onPress is Function) {
+          onPress();
+        }
+      },
+      child: buildField(context),
+    ));
   }
 }

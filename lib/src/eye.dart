@@ -3,14 +3,22 @@ import 'package:flutter/material.dart';
 
 class Eye extends StatefulWidget {
   final Function onChange;
+  final bool defaultOpen;
   final Color color;
-  const Eye({Key key, this.onChange, this.color}) : super(key: key);
+  const Eye({Key key, this.onChange, this.color, this.defaultOpen = true})
+      : super(key: key);
   @override
   _EyeState createState() => _EyeState();
 }
 
 class _EyeState extends State<Eye> {
-  bool _status = true;
+  bool _status;
+
+  @override
+  void initState() {
+    _status = widget.defaultOpen;
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkResponse(

@@ -68,8 +68,8 @@ class Button extends StatelessWidget {
         onPressed: disabled == true ? null : _log,
         child: Text(text),
         borderSide:
-            new BorderSide(color: color ?? Theme.of(context).primaryColor),
-        textColor: Theme.of(context).primaryColor,
+            new BorderSide(color: color ?? Theme.of(context).buttonColor),
+        textColor: Theme.of(context).accentColor,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
       );
