@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:beeui/enums.dart';
 import 'package:beeui/src/button.dart';
+import 'package:beeui/src/widget/index.dart';
 import 'package:flutter/material.dart';
 
 import 'icon.dart';
@@ -170,33 +171,8 @@ class _BaseListLoadState extends State<BaseListLoad> {
   }
 
   Widget _renderInitError() {
-    return new Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Icon(
-            BeeIcon.netError,
-            size: 100,
-            color: Colors.grey[500],
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Text(
-              '亲的网络有点问题~',
-              style: TextStyle(fontSize: 12.0, color: Colors.grey[400]),
-            ),
-          ),
-          Padding(padding: EdgeInsets.only(bottom: 10)),
-          Button(
-            "重新加载",
-            color: Theme.of(context).buttonColor,
-            type: ButtonType.gost,
-            onPress: _onReloadBtn,
-            radius: 30,
-          )
-        ],
-      ),
+    return LoadErrorWidget(
+      onPressed: _onReloadBtn,
     );
   }
 
@@ -289,25 +265,7 @@ class _BaseListLoadState extends State<BaseListLoad> {
   }
 
   Widget _renderEmptyData() {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Icon(
-          BeeIcon.noData,
-          size: 70,
-          color: Colors.grey[300],
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Text(
-            '暂无数据',
-            style: TextStyle(fontSize: 12.0, color: Colors.grey[400]),
-          ),
-        )
-      ],
-    ));
+    return LoadNodataWidget();
   }
 
   Future<void> _onRefresh() async {
