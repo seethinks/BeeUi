@@ -87,7 +87,7 @@ class _InputTextState extends State<InputText> {
       return TextInputType.phone;
     }
 
-    return TextInputType.number;
+    return TextInputType.text;
   }
 
   List<TextInputFormatter> _inputFormatters() {

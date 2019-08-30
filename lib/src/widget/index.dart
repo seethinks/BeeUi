@@ -45,7 +45,7 @@ class LoadNodataWidget extends StatelessWidget {
 class LoadErrorWidget extends StatelessWidget {
   final String msg;
   final VoidCallback onPressed;
-  LoadErrorWidget({this.msg = "亲的网络有点问题~", this.onPressed});
+  LoadErrorWidget({this.msg = "服务器超时或异常", this.onPressed});
   @override
   Widget build(BuildContext context) {
     return new Center(
