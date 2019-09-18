@@ -102,10 +102,10 @@ class RealRichText extends Text {
 
     Widget result = _RichTextWrapper(
         textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
-        textDirection:
-            textDirection, // RichText uses Directionality.of to obtain a default if this is null.
-        locale:
-            locale, // RichText uses Localizations.localeOf to obtain a default if this is null
+        textDirection: textDirection,
+        // RichText uses Directionality.of to obtain a default if this is null.
+        locale: locale,
+        // RichText uses Localizations.localeOf to obtain a default if this is null
         softWrap: softWrap ?? defaultTextStyle.softWrap,
         overflow: overflow ?? defaultTextStyle.overflow,
         textScaleFactor:
@@ -134,6 +134,7 @@ class ImageSpan extends TextSpan {
   final EdgeInsets margin;
   final ImageProvider imageProvider;
   final ImageResolver imageResolver;
+
   ImageSpan(
     this.imageProvider, {
     this.imageWidth = 14.0,
@@ -193,24 +194,31 @@ class ImageResolver {
 
     this._listener = listener;
     if (_imageStream.key != oldImageStream?.key) {
-      oldImageStream?.removeListener(_handleImageChanged);
-      _imageStream.addListener(_handleImageChanged);
+      oldImageStream
+          ?.removeListener(new ImageStreamListener(_imageStreamListener));
+      _imageStream.addListener(new ImageStreamListener(_imageStreamListener));
     }
   }
 
-  void _handleImageChanged(ImageInfo imageInfo, bool synchronousCall) {
+  Future<void> _imageStreamListener(
+      ImageInfo imageInfo, bool synchronousCall) async {
     image = imageInfo.image;
     _listener?.call(imageInfo, synchronousCall);
   }
 
+//  void _handleImageChanged(ImageInfo imageInfo, bool synchronousCall) {
+//    image = imageInfo.image;
+//    _listener?.call(imageInfo, synchronousCall);
+//  }
+
   void addListening() {
     if (this._listener != null) {
-      _imageStream?.addListener(_handleImageChanged);
+      _imageStream?.addListener(new ImageStreamListener(_imageStreamListener));
     }
   }
 
   void stopListening() {
-    _imageStream?.removeListener(_handleImageChanged);
+    _imageStream?.removeListener(new ImageStreamListener(_imageStreamListener));
   }
 }
 
@@ -219,7 +227,7 @@ class ImageResolver {
 ///
 /// No more special purpose.
 class _RichTextWrapper extends RichText {
-  const _RichTextWrapper({
+  _RichTextWrapper({
     Key key,
     @required TextSpan text,
     TextAlign textAlign = TextAlign.start,
