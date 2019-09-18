@@ -43,25 +43,25 @@ class RealRichText extends Text {
   final List<TextSpan> textSpanList;
 
   RealRichText(
-    this.textSpanList, {
-    Key key,
-    TextStyle style,
-    TextAlign textAlign = TextAlign.start,
-    TextDirection textDirection,
-    bool softWrap = true,
-    TextOverflow overflow = TextOverflow.clip,
-    double textScaleFactor = 1.0,
-    int maxLines,
-    Locale locale,
-  }) : super("",
-            style: style,
-            textAlign: textAlign,
-            textDirection: textDirection,
-            softWrap: softWrap,
-            overflow: overflow,
-            textScaleFactor: textScaleFactor,
-            maxLines: maxLines,
-            locale: locale);
+      this.textSpanList, {
+        Key key,
+        TextStyle style,
+        TextAlign textAlign = TextAlign.start,
+        TextDirection textDirection,
+        bool softWrap = true,
+        TextOverflow overflow = TextOverflow.clip,
+        double textScaleFactor = 1.0,
+        int maxLines,
+        Locale locale,
+      }) : super("",
+      style: style,
+      textAlign: textAlign,
+      textDirection: textDirection,
+      softWrap: softWrap,
+      overflow: overflow,
+      textScaleFactor: textScaleFactor,
+      maxLines: maxLines,
+      locale: locale);
 
   List<TextSpan> extractAllNestedChildren(TextSpan textSpan) {
     if (textSpan.children == null || textSpan.children.length == 0) {
@@ -102,14 +102,14 @@ class RealRichText extends Text {
 
     Widget result = _RichTextWrapper(
         textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
-        textDirection: textDirection,
-        // RichText uses Directionality.of to obtain a default if this is null.
-        locale: locale,
-        // RichText uses Localizations.localeOf to obtain a default if this is null
+        textDirection:
+        textDirection, // RichText uses Directionality.of to obtain a default if this is null.
+        locale:
+        locale, // RichText uses Localizations.localeOf to obtain a default if this is null
         softWrap: softWrap ?? defaultTextStyle.softWrap,
         overflow: overflow ?? defaultTextStyle.overflow,
         textScaleFactor:
-            textScaleFactor ?? MediaQuery.textScaleFactorOf(context),
+        textScaleFactor ?? MediaQuery.textScaleFactorOf(context),
         maxLines: maxLines ?? defaultTextStyle.maxLines,
         text: textSpan);
     if (semanticsLabel != null) {
@@ -134,25 +134,24 @@ class ImageSpan extends TextSpan {
   final EdgeInsets margin;
   final ImageProvider imageProvider;
   final ImageResolver imageResolver;
-
   ImageSpan(
-    this.imageProvider, {
-    this.imageWidth = 14.0,
-    this.imageHeight = 14.0,
-    this.margin,
-    GestureRecognizer recognizer,
-  })  : imageResolver = ImageResolver(imageProvider),
+      this.imageProvider, {
+        this.imageWidth = 14.0,
+        this.imageHeight = 14.0,
+        this.margin,
+        GestureRecognizer recognizer,
+      })  : imageResolver = ImageResolver(imageProvider),
         super(
-            style: TextStyle(
-                color: Colors.transparent,
-                letterSpacing:
-                    imageWidth + (margin == null ? 0 : margin.horizontal),
-                height: 1,
-                fontSize: (imageHeight / 1.15) +
-                    (margin == null ? 0 : margin.vertical)),
-            text: "\u200B",
-            children: [],
-            recognizer: recognizer);
+          style: TextStyle(
+              color: Colors.transparent,
+              letterSpacing:
+              imageWidth + (margin == null ? 0 : margin.horizontal),
+              height: 1,
+              fontSize: (imageHeight / 1.15) +
+                  (margin == null ? 0 : margin.vertical)),
+          text: "\u200B",
+          children: [],
+          recognizer: recognizer);
 
   void updateImageConfiguration(BuildContext context) {
     imageResolver.updateImageConfiguration(context, imageWidth, imageHeight);
@@ -194,31 +193,24 @@ class ImageResolver {
 
     this._listener = listener;
     if (_imageStream.key != oldImageStream?.key) {
-      oldImageStream
-          ?.removeListener(new ImageStreamListener(_imageStreamListener));
-      _imageStream.addListener(new ImageStreamListener(_imageStreamListener));
+      oldImageStream?.removeListener(ImageStreamListener(_handleImageChanged));
+      _imageStream.addListener(ImageStreamListener(_handleImageChanged));
     }
   }
 
-  Future<void> _imageStreamListener(
-      ImageInfo imageInfo, bool synchronousCall) async {
+  void _handleImageChanged(ImageInfo imageInfo, bool synchronousCall) {
     image = imageInfo.image;
     _listener?.call(imageInfo, synchronousCall);
   }
 
-//  void _handleImageChanged(ImageInfo imageInfo, bool synchronousCall) {
-//    image = imageInfo.image;
-//    _listener?.call(imageInfo, synchronousCall);
-//  }
-
   void addListening() {
     if (this._listener != null) {
-      _imageStream?.addListener(new ImageStreamListener(_imageStreamListener));
+      _imageStream?.addListener(ImageStreamListener(_handleImageChanged));
     }
   }
 
   void stopListening() {
-    _imageStream?.removeListener(new ImageStreamListener(_imageStreamListener));
+    _imageStream?.removeListener(ImageStreamListener(_handleImageChanged));
   }
 }
 
@@ -244,15 +236,15 @@ class _RichTextWrapper extends RichText {
         assert(textScaleFactor != null),
         assert(maxLines == null || maxLines > 0),
         super(
-            key: key,
-            text: text,
-            textAlign: textAlign,
-            textDirection: textDirection,
-            softWrap: softWrap,
-            overflow: overflow,
-            textScaleFactor: textScaleFactor,
-            maxLines: maxLines,
-            locale: locale);
+          key: key,
+          text: text,
+          textAlign: textAlign,
+          textDirection: textDirection,
+          softWrap: softWrap,
+          overflow: overflow,
+          textScaleFactor: textScaleFactor,
+          maxLines: maxLines,
+          locale: locale);
 
   @override
   RenderParagraph createRenderObject(BuildContext context) {
@@ -274,22 +266,22 @@ class _RichTextWrapper extends RichText {
 class _RealRichRenderParagraph extends RenderParagraph {
   _RealRichRenderParagraph(TextSpan text,
       {TextAlign textAlign,
-      TextDirection textDirection,
-      bool softWrap,
-      TextOverflow overflow,
-      double textScaleFactor,
-      int maxLines,
-      Locale locale})
+        TextDirection textDirection,
+        bool softWrap,
+        TextOverflow overflow,
+        double textScaleFactor,
+        int maxLines,
+        Locale locale})
       : super(
-          text,
-          textAlign: textAlign,
-          textDirection: textDirection,
-          softWrap: softWrap,
-          overflow: overflow,
-          textScaleFactor: textScaleFactor,
-          maxLines: maxLines,
-          locale: locale,
-        );
+    text,
+    textAlign: textAlign,
+    textDirection: textDirection,
+    softWrap: softWrap,
+    overflow: overflow,
+    textScaleFactor: textScaleFactor,
+    maxLines: maxLines,
+    locale: locale,
+  );
 
   @override
   void paint(PaintingContext context, Offset offset) {
