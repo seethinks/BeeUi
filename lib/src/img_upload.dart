@@ -11,6 +11,7 @@ class ImgUpload extends StatefulWidget {
   final double height;
   final value;
   final Function onCrop;
+
   const ImgUpload(
       {this.placeholder,
       this.width,
@@ -19,6 +20,7 @@ class ImgUpload extends StatefulWidget {
       this.onCrop,
       Key key})
       : super(key: key);
+
   @override
   _ImgUploadState createState() => _ImgUploadState();
 }
@@ -149,10 +151,10 @@ class _ImgUploadState extends State<ImgUpload> {
 
   Future<Null> _cropImage(File imageFile) async {
     assert(imageFile != null);
+    CropAspectRatio cropAspectRatio = CropAspectRatio(ratioX: 1.0, ratioY: 1.0);
     File croppedFile = await ImageCropper.cropImage(
       sourcePath: imageFile.path,
-      ratioX: 1.0,
-      ratioY: 1.0,
+      aspectRatio: cropAspectRatio,
       maxWidth: 512,
       maxHeight: 512,
     );
