@@ -38,6 +38,7 @@ class _SysYzmState extends State<SysYzm> {
   }
 
   _onTap() {
+    if (!mounted) return;
     setState(() {
       _verifyStr = '发送中';
     });
@@ -45,6 +46,7 @@ class _SysYzmState extends State<SysYzm> {
   }
 
   _begin(bool isBegin) {
+    if (!mounted) return;
     if (isBegin) {
       setState(() {
         _startTimer();
@@ -57,6 +59,7 @@ class _SysYzmState extends State<SysYzm> {
   }
 
   _startTimer() {
+    if (!mounted) return;
     _seconds = 60;
 
     _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {

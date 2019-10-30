@@ -31,9 +31,10 @@ class BeeUi {
         builder: (BuildContext context) {
           return new Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(16))),
+                color: Theme.of(context).primaryColor,
+                // borderRadius:
+                //     BorderRadius.vertical(top: Radius.circular(16))
+              ),
               // padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
