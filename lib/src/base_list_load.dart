@@ -70,6 +70,7 @@ class _BaseListLoadState extends State<BaseListLoad> {
   }
 
   void _handleReloadValueChanged() {
+    if(!mounted) return;
     setState(() {
       isFirst = true;
     });

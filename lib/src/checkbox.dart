@@ -46,6 +46,7 @@ class _CheckBoxState extends State<CheckBox> {
   }
 
   void onChange() {
+        if(!mounted) return;
     setState(() {
       _checkboxSelected = !_checkboxSelected;
       if (widget.onChange is Function) {

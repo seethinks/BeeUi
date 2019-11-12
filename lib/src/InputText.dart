@@ -77,6 +77,7 @@ class _InputTextState extends State<InputText> {
   }
 
   void _onFocusChange() {
+        if(!mounted) return;
     setState(() {
       isFocus = _focus.hasFocus;
     });
@@ -259,6 +260,7 @@ class _InputTextState extends State<InputText> {
   }
 
   void _onChange() {
+        if(!mounted) return;
     String text = widget.controller.text;
     if (widget.onChange is Function) {
       widget.onChange(text);

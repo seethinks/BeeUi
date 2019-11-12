@@ -21,6 +21,7 @@ class _BaseWrapState extends State<BaseWrap2> {
 
   _scrollListener() {
     print("object");
+        if(!mounted) return;
     if (isShrink != lastStatus) {
       setState(() {
         lastStatus = isShrink;

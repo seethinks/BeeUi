@@ -43,6 +43,7 @@ class _ImgVerifyCodeState extends State<ImgVerifyCode> {
   }
 
   void refresh() {
+        if(!mounted) return;
     setState(() {
       count = count + 1;
 

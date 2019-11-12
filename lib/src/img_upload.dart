@@ -141,6 +141,7 @@ class _ImgUploadState extends State<ImgUpload> {
 
   setImgPath(File file) async {
     print("image====${file}");
+    if (!mounted) return;
     setState(() {
       // _sample = sample;
       imageFile = file;

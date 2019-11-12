@@ -68,7 +68,7 @@ class _ButtonState extends State<Button> {
 
   _getSizes() {
     final RenderBox renderBoxRed = globalKey.currentContext.findRenderObject();
-
+    if(!mounted) return;
     setState(() {
       widgetSize = renderBoxRed.size;
       //  print("SIZE of Red: $widgetSize");

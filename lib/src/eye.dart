@@ -24,6 +24,7 @@ class _EyeState extends State<Eye> {
     return InkResponse(
       borderRadius: BorderRadius.circular(2),
       onTap: () {
+        if (!mounted) return;
         setState(() {
           _status = !_status;
         });
